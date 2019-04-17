@@ -127,14 +127,16 @@ requests
 | render barchart
 ```
 
-### Add Service Principal Kubernetes secret for ACR access
+### Add ACR Built-in Account as Kubernetes secret for ACR access
+
+Use the Service Principal approach by defualt. If issues occur another approach is to use the built-in account that the container registry exposes.
 
 ```
 az acr login -n acraksworkshoplra
 az acr update -n acraksworkshoplra --admin-enabled true
 az acr credential show -n acraksworkshoplra
 
-kubectl create secret docker-registry acr-auth --docker-server acraksworkshoplra.azurecr.io --docker-username [app_id] --docker-password [secret] --docker-email [email]
+kubectl create secret docker-registry acr-auth --docker-server acraksworkshoplra.azurecr.io --docker-username [docker_id] --docker-password [docker_secret] --docker-email [email]
 ```
 
 ## References
