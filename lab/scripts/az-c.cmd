@@ -1,0 +1,1 @@
+az acr login -n acraksworkshoplra

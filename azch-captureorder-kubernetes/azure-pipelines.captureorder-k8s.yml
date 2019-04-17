@@ -1,0 +1,21 @@
+pool:
+  vmImage: 'Ubuntu 16.04'
+
+steps:
+- task: CopyFiles@2
+  displayName: 'copy yaml files'
+  inputs:
+    sourceFolder: 'yaml' 
+    contents: '**' 
+    targetFolder: '$(Build.ArtifactStagingDirectory)/yaml'
+- task: CopyFiles@2
+  displayName: 'copy helm files'
+  inputs:
+    sourceFolder: '$(System.DefaultWorkingDirectory)/helm' 
+    contents: '**/*' 
+    targetFolder: '$(Build.ArtifactStagingDirectory)/helm'
+- task: PublishBuildArtifacts@1
+  displayName: 'publish artifacts'
+  inputs:
+    artifactName: 'deploy'
+    pathToPublish: '$(Build.ArtifactStagingDirectory)'

@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: captureorder
+spec:
+  selector:
+      matchLabels:
+        app: captureorder
+  replicas: 2
+  template:
+      metadata:
+        labels:
+            app: captureorder
+      spec:
+        imagePullSecrets:
+        - name: acr-auth
+        containers:
+        - name: captureorder
+          image: acraksworkshoplra.azurecr.io/captureorder:##BUILD_NUMBER##
+          imagePullPolicy: Always
+          readinessProbe:
+            httpGet:
+              port: 8080
+              path: /healthz
+          livenessProbe:
+            httpGet:
+              port: 8080
+              path: /healthz
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+          env:
+          - name: TEAMNAME
+            value: "team-lra"
+          - name: MONGOHOST
+            value: "orders-mongo-mongodb.default.svc.cluster.local"
+          - name: MONGOUSER
+            value: "orders-user"
+          - name: MONGOPASSWORD
+            value: "orders-password"
+          - name: CHALLENGEAPPINSIGHTS_KEY
+            value: "88ee1aab-6408-446a-8d8c-e2822431ae4c"
+          ports:
+          - containerPort: 8080
